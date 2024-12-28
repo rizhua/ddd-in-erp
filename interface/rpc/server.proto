@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package rpc;
+option go_package = "./;rpc";
+
+message Query {
+    string method = 1;
+    bytes data = 2;
+}
+
+message Reply {
+    int64 total = 1;
+    int32 pages = 2;
+    bytes data = 3;
+}
+
+service Rizhua {
+    rpc Dial (Query) returns (Reply);
+}

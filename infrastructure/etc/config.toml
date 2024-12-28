@@ -1,0 +1,114 @@
+# run mode(debug|test|release)
+RunMode = "debug"
+
+# Whether to enable swagger
+Swagger = true
+
+# Whether to print configuration parameters at startup
+PrintConfig = false
+
+[HTTP]
+# http listening address
+Host = "0.0.0.0"
+# http listening port
+Port = 8000
+# Certification path
+CertFile = ""
+# Certificate key
+KeyFile = ""
+# http graceful shutdown wait timeout time (in seconds)
+ShutdownTimeout = 30
+# Maximum allowed content length (64M)
+MaxContentLength = 67108864
+# Maximum log length allowed for output
+MaxLoggerLength = 4096
+
+[RPC]
+# rpc listening address
+Host = "127.0.0.1"
+# rpc listening port
+Port = 8080
+
+[Casbin]
+# Whether to enable casbin
+Enable = true
+# debug mode
+Debug = false
+# Model configuration file (can also be specified with -m when starting server)
+Model = ""
+# Whether to enable the regular automatic loading strategy
+AutoLoad = false
+# Periodic automatic loading strategy time interval (in seconds)
+AutoLoadInternal = 60
+
+[Log]
+# Log level (1: fatal 2: error, 3: warn, 4: info, 5: debug, 6: trace)
+Level = 5
+# Log format (support output format: text/json)
+Format = "json"
+# Log output (support: stdout/stderr/file)
+Output = "stdout"
+# Specify the file path for log output
+OutputFile = "../data/rizhua.log"
+# Whether to enable the log hook
+EnableHook = false
+# Write the log level of the hook
+HookLevels = ["info","warn","error"]
+# Log hook (support: xorm/mongo)
+Hook = "xorm"
+# The maximum number of worker threads for writing hooks
+HookMaxThread = 1
+# The maximum number of buffers written to the hook
+HookMaxBuffer = 512
+
+# Service monitoring (GOPS: https://github.com/google/gops)
+[Monitor]
+# Whether to enable
+Enable = true
+# HTTP listening address and port
+Addr = "127.0.0.1:16060"
+# Configuration file directory (empty, use the default directory)
+ConfigDir = ""
+
+[Root]
+# Login Username
+UserName = "root"
+# login password
+Password = "e10adc3949ba59abbe56e057f20f883e"
+# Displayed real name
+RealName = "Super Administrator"
+
+# redis configuration information
+[Redis]
+# address
+Addr = "127.0.0.1:6379"
+# password
+Password = "redis,123@"
+
+[Postgres]
+# Connection address
+Host = "127.0.0.1"
+# Connection port
+Port = 5432
+# username
+User = "postgres"
+# password
+Password = "rMHmqsn0c"
+# Database
+DBName = "rizhua"
+# SSL mode
+SSLMode = "disable"
+
+[SQLite]
+# Database path
+Path = "../data/rizhua.db"
+
+[Email]
+User = "service@haxima.com"
+Password = "CS5gfpMGu1ZnTiu9"
+Host = "smtp.mxhichina.com:25"
+
+[File]
+Path = "../data/upload/"
+Prefix = "upload"
+Size = 10485760
