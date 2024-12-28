@@ -4,6 +4,7 @@ __debug_bin*
 
 bin
 web
+data
 
 *.log
 *.exe
