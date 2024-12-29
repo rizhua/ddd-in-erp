@@ -46,6 +46,7 @@ func fail(ctx *gin.Context, code int32, desc string) {
 func NewHandler(
 	brandApp application.BrandService,
 	bundleApp application.BundleService,
+	categoryApp application.CategoryService,
 	nodeApp application.NodeService,
 	orderApp application.OrderService,
 	productApp application.ProductService,
@@ -57,6 +58,7 @@ func NewHandler(
 	return Handler{
 		brandApp:     brandApp,
 		bundleApp:    bundleApp,
+		categoryApp:  categoryApp,
 		nodeApp:      nodeApp,
 		orderApp:     orderApp,
 		productApp:   productApp,
@@ -71,6 +73,7 @@ type Handler struct {
 	Context      context.Context
 	brandApp     application.BrandService
 	bundleApp    application.BundleService
+	categoryApp  application.CategoryService
 	nodeApp      application.NodeService
 	orderApp     application.OrderService
 	structureApp application.StructureService
@@ -104,12 +107,14 @@ func (t *Handler) Rest(c *gin.Context) {
 	}
 
 	switch arr[1] {
-	case "node":
-		data, err = t.Node(c.Request.URL.Path, args)
 	case "brand":
 		data, err = t.Brand(c.Request.URL.Path, args)
 	case "bundle":
 		data, err = t.Bundle(c.Request.URL.Path, args)
+	case "category":
+		data, err = t.Category(c.Request.URL.Path, args)
+	case "node":
+		data, err = t.Node(c.Request.URL.Path, args)
 	case "structure":
 		data, err = t.Structure(c.Request.URL.Path, args)
 	case "product":
@@ -167,6 +172,23 @@ func (t *Handler) Bundle(path string, args []byte) (data any, err error) {
 		data, err = t.bundleApp.FindNodeID(args)
 	case "/bundle/license/find":
 		data, err = t.bundleApp.FindLicense(args)
+	default:
+		err = errors.New("404")
+	}
+	return
+}
+
+// 商品类目
+func (t *Handler) Category(path string, args []byte) (data any, err error) {
+	switch path {
+	case "/category/create":
+		err = t.categoryApp.Create(args)
+	case "/category/delete":
+		err = t.categoryApp.Delete(args)
+	case "/category/update":
+		err = t.categoryApp.Update(args)
+	case "/category/find":
+		data, err = t.categoryApp.Find(args)
 	default:
 		err = errors.New("404")
 	}
@@ -257,14 +279,6 @@ func (t *Handler) Product(path string, args []byte) (data any, err error) {
 		err = t.productApp.UpdateAttribute(args)
 	case "/product/attribute/find":
 		data, err = t.productApp.FindAttribute(args)
-	case "/product/category/create":
-		err = t.productApp.CreateCategory(args)
-	case "/product/category/delete":
-		err = t.productApp.DeleteCategory(args)
-	case "/product/category/update":
-		err = t.productApp.UpdateCategory(args)
-	case "/product/category/find":
-		data, err = t.productApp.FindCategory(args)
 	default:
 		err = errors.New("404")
 	}
@@ -440,6 +454,7 @@ func (t *Handler) WithToken(token string) {
 	ctx := context.WithValue(context.Background(), constant.TOKEN, token)
 	t.brandApp.Context = ctx
 	t.bundleApp.Context = ctx
+	t.categoryApp.Context = ctx
 	t.nodeApp.Context = ctx
 	t.orderApp.Context = ctx
 	t.structureApp.Context = ctx

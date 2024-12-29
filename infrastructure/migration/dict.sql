@@ -43,13 +43,13 @@ CREATE TABLE "oauth" (
   "user_id" bigint not null,
   "type" varchar(16) not null,
   "auth_id" varchar(64) not null,
-  "unionid" varchar(128)
+  "union_id" varchar(128)
 );
 COMMENT ON TABLE "oauth" IS '用户';
 COMMENT ON COLUMN "oauth".user_id IS '用户id';
 COMMENT ON COLUMN "oauth".type IS '类型: weibo, qq, wechat';
 COMMENT ON COLUMN "oauth".auth_id IS '授权标识: uid, openid';
-COMMENT ON COLUMN "oauth".unionid IS 'QQ/微信同一主体下Unionid相同';
+COMMENT ON COLUMN "oauth".union_id IS 'QQ/微信同一主体下Unionid相同';
 
 
 -- 组织 - org  编码:组织类型-行业分类

@@ -36,6 +36,7 @@ func BuildInjector(db *xorm.Engine) (*Injector, func(), error) {
 		// domain
 		domain.NewBrandService,
 		domain.NewBundleService,
+		domain.NewCategoryService,
 		domain.NewNodeService,
 		domain.NewOrderService,
 		domain.NewProductService,
@@ -46,6 +47,7 @@ func BuildInjector(db *xorm.Engine) (*Injector, func(), error) {
 		// application
 		application.NewBrandService,
 		application.NewBundleService,
+		application.NewCategoryService,
 		application.NewNodeService,
 		application.NewOrderService,
 		application.NewProductService,

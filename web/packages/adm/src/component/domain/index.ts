@@ -1,5 +1,6 @@
 export * as auth from './auth';
 export * as bundle from './bundle';
+export * as category from './category';
 export * as customer from './customer';
 export * as emp from './emp';
 export * as market from './market';

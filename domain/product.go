@@ -84,20 +84,3 @@ func (t *ProductService) UpdateAttribute(cmd command.UpdateAttribute) error {
 	}
 	return attribute.Update()
 }
-
-func (t *ProductService) CreateCategory(cmd command.CreateCategory) error {
-	category := entity.Category{
-		Name:     cmd.Name,
-		ParentID: cmd.ParentID,
-	}
-	return category.Create()
-}
-
-func (t *ProductService) UpdateCategory(cmd command.UpdateCategory) error {
-	category := entity.Category{
-		ID:       cmd.ID,
-		Name:     cmd.Name,
-		ParentID: cmd.ParentID,
-	}
-	return category.Update()
-}

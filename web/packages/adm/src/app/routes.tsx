@@ -16,6 +16,15 @@ const routes: RouteObject[] = [
                 },
             ]
         }, {
+            path: 'category',
+            element: <Outlet />,
+            children: [
+                {
+                    path: '',
+                    element: <domain.category.List />
+                },
+            ]
+        }, {
             path: 'customer',
             element: <Outlet />,
             children: [
@@ -115,15 +124,6 @@ const routes: RouteObject[] = [
                             path: '',
                             element: <domain.product.brand.List />
                         }
-                    ]
-                }, {
-                    path: 'category',
-                    element: <Outlet />,
-                    children: [
-                        {
-                            path: '',
-                            element: <domain.product.category.List />
-                        },
                     ]
                 }, {
                     path: 'agent',

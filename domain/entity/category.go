@@ -14,34 +14,52 @@ type Category struct {
 	ParentID  int64
 	Path      string
 	Sort      int8
-	Attribute *categoryAttribute
+	Attribute *CategoryAttribute
 }
 
-func (c *Category) Create() error {
-	catalog := po.Category{
-		Name:     c.Name,
-		ParentID: c.ParentID,
-		Sort:     c.Sort,
+func (t *Category) Create() error {
+	category := po.Category{
+		Name:     t.Name,
+		ParentID: t.ParentID,
+		Sort:     t.Sort,
 	}
-	return CategoryRepo.Create(catalog)
+	return CategoryRepo.Create(category)
 }
 
-func (c *Category) Update() error {
-	catalog := po.Category{
-		ID:       c.ID,
-		Name:     c.Name,
-		ParentID: c.ParentID,
-		Sort:     c.Sort,
+func (t *Category) Update() error {
+	category := po.Category{
+		ID:       t.ID,
+		Name:     t.Name,
+		ParentID: t.ParentID,
+		Sort:     t.Sort,
 	}
-	return CategoryRepo.Update(catalog)
+	return CategoryRepo.Update(category)
 }
 
 // 实体:类目属性
-type categoryAttribute struct {
-	ID         int64
-	CategoryID int64
-	Label      string
-	Value      []string
-	Type       string
-	Required   bool
+type CategoryAttribute struct {
+	ID    int64
+	Label string
+	Value []string
+	Type  string
+}
+
+func (t *Category) CreateAttribute() error {
+	categoryAttribute := po.CategoryAttribute{
+		CategoryID: t.ID,
+		Label:      t.Attribute.Label,
+		Value:      t.Attribute.Value,
+		Type:       t.Attribute.Type,
+	}
+	return CategoryRepo.CreateAttribute(categoryAttribute)
+}
+
+func (t *Category) UpdateAttribute() error {
+	categoryAttribute := po.CategoryAttribute{
+		ID:    t.Attribute.ID,
+		Label: t.Attribute.Label,
+		Value: t.Attribute.Value,
+		Type:  t.Attribute.Type,
+	}
+	return CategoryRepo.CreateAttribute(categoryAttribute)
 }

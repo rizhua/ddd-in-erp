@@ -8,3 +8,7 @@ type CreateOrg struct {
 	Address string `json:"address"`
 	OwnerID string `json:"ownerId"`
 }
+
+type UpdateOrg struct {
+	ID int64 `json:"id" binding:"required"`
+}

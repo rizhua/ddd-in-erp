@@ -1,7 +1,30 @@
 package command
 
-import "errors"
+import (
+	"errors"
 
+	"rizhua.com/pkg/util"
+)
+
+// 创建用户
+type CreateUser struct {
+	Account  string `json:"account" binding:"required"`
+	Password string `json:"password" binding:"required"`
+	Captcha  string `json:"captcha"`
+}
+
+func (t *CreateUser) Validate() error {
+	if util.IsEmail(t.Account) {
+		return nil
+	}
+
+	if t.Captcha == "" {
+		return errors.New("验证码不能为空")
+	}
+	return nil
+}
+
+// 更新用户
 type UpdateUser struct {
 	Avatar   string `json:"avatar"`
 	Birthday string `json:"birthday"`
@@ -30,6 +53,7 @@ type ResetUserPassword struct {
 }
 
 func (t *ResetUserPassword) Validate() error {
+
 	if t.Password != t.RePassword {
 		return errors.New("两次输入的密码不一致")
 	}

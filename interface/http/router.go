@@ -42,6 +42,18 @@ func (r *Router) Register(app *gin.Engine) error {
 		bundle.POST("/license/find", r.handler.Rest)
 	}
 
+	category := app.Group("/category")
+	{
+		category.POST("/create", r.handler.Rest)
+		category.POST("/delete", r.handler.Rest)
+		category.POST("/update", r.handler.Rest)
+		category.POST("/find", r.handler.Rest)
+		category.POST("/attribute/create", r.handler.Rest)
+		category.POST("/attribute/delete", r.handler.Rest)
+		category.POST("/attribute/update", r.handler.Rest)
+		category.POST("/attribute/find", r.handler.Rest)
+	}
+
 	file := app.Group("/file")
 	{
 		file.POST("/upload", r.handler.Upload)
@@ -98,10 +110,6 @@ func (r *Router) Register(app *gin.Engine) error {
 		product.POST("/attribute/delete", r.handler.Rest)
 		product.POST("/attribute/update", r.handler.Rest)
 		product.POST("/attribute/find", r.handler.Rest)
-		product.POST("/category/create", r.handler.Rest)
-		product.POST("/category/delete", r.handler.Rest)
-		product.POST("/category/update", r.handler.Rest)
-		product.POST("/category/find", r.handler.Rest)
 	}
 
 	role := app.Group("/role")

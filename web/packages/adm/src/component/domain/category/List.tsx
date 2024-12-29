@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { model, api } from "@/service";
 import topbar from "topbar";
-import { Attribute } from "./Attribute";
+import * as attribute from "./attribute";
 
 const Container = styled.div`
   display: flex;
@@ -51,7 +51,7 @@ const Main = styled.div`
 
 export function List() {
   document.title = '商品类目';
-  const [category, setCateory] = useState({
+  const [category, setCategory] = useState({
     info: new model.Category(),
     list: new Array<model.Category>(),
     dialog: {
@@ -77,13 +77,13 @@ export function List() {
     if (!!queryBy.getFieldValue('value')) {
       data.queryBy = [{ field: queryBy.getFieldValue('field'), value: queryBy.getFieldValue('value') }];
     }
-    let res = await api.Product.findCategory(data);
+    let res = await api.Category.find(data);
     if (res.code == 1000) {
       category.list = res.data.list;
     } else {
       category.list = [];
     }
-    setCateory({ ...category });
+    setCategory({ ...category });
     topbar.hide();
   }
 
@@ -106,7 +106,7 @@ export function List() {
       tmp.parentId = null!;
     }
     categoryForm.setFieldsValue(tmp);
-    setCateory({ ...category });
+    setCategory({ ...category });
   }
 
   const onCategory = async () => {
@@ -119,9 +119,9 @@ export function List() {
     };
     let res: model.Response;
     if (data.id > 0) {
-      res = await api.Product.updateCategory(data);
+      res = await api.Category.update(data);
     } else {
-      res = await api.Product.createCategory(data);
+      res = await api.Category.create(data);
     }
     if (res.code == 1000) {
       disCategory();
@@ -135,7 +135,7 @@ export function List() {
     let data = {
       id: [item.id],
     };
-    let res = await api.Product.deleteCategory(data);
+    let res = await api.Category.delete(data);
     if (res.code == 1000) {
       message.success('删除成功');
       getCategory();
@@ -171,7 +171,7 @@ export function List() {
 
   const optCategory = (v: model.Category) => {
     category.info = v;
-    setCateory({ ...category });
+    setCategory({ ...category });
     console.log(v);
   }
 
@@ -241,7 +241,7 @@ export function List() {
       </Modal>
     </Side>
     <Main>
-      {category.info.id > 0 ? <Attribute category={category.info} /> : <Empty description={false} />}
+      {category.info.id > 0 ? <attribute.List category={category.info} /> : <Empty description={false} />}
     </Main>
   </Container>
 }

@@ -1,5 +1,6 @@
 export * from './brand';
 export * from './bundle';
+export * from './category';
 export * from './file';
 export * from './node';
 export * from './product';

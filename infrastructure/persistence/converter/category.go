@@ -62,3 +62,33 @@ func (t *Category) Tree(in []po.Category, parentID int64) (list []CategoryTree) 
 	}
 	return
 }
+
+type CategoryAttribute struct {
+	ID         int64    `json:"id"`
+	Label      string   `json:"label"`
+	Value      []string `json:"value"`
+	Type       string   `json:"type"`
+	CategoryID int64    `json:"categoryId"`
+	UpdateAt   string   `json:"updateAt"`
+	CreateAt   string   `json:"createAt"`
+}
+
+func (t *CategoryAttribute) Info(in po.CategoryAttribute) (info CategoryAttribute) {
+	info = CategoryAttribute{
+		ID:         in.ID,
+		Label:      in.Label,
+		Value:      in.Value,
+		Type:       in.Type,
+		CategoryID: in.CategoryID,
+		UpdateAt:   in.UpdateAt.Format("2006-01-02 15:04:05"),
+		CreateAt:   in.CreateAt.Format("2006-01-02 15:04:05"),
+	}
+	return
+}
+
+func (t *CategoryAttribute) List(in []po.CategoryAttribute) (list []CategoryAttribute) {
+	for _, v := range in {
+		list = append(list, t.Info(v))
+	}
+	return
+}
