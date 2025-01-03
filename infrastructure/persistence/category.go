@@ -138,7 +138,7 @@ func (t *category) CreateAttribute(info po.CategoryAttribute) error {
 
 // 更新类目属性
 func (t *category) UpdateAttribute(info po.CategoryAttribute) error {
-	has, err := t.db.ID(info.ID).Omit("category_id").Update(&info)
+	has, err := t.db.UseBool("required").ID(info.ID).Omit("category_id").Update(&info)
 	if err != nil || has == 0 {
 		return errors.New("更新失败")
 	}

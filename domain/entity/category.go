@@ -38,10 +38,11 @@ func (t *Category) Update() error {
 
 // 实体:类目属性
 type CategoryAttribute struct {
-	ID    int64
-	Label string
-	Value []string
-	Type  string
+	ID       int64
+	Label    string
+	Value    []string
+	Type     string
+	Required bool
 }
 
 func (t *Category) CreateAttribute() error {
@@ -50,16 +51,18 @@ func (t *Category) CreateAttribute() error {
 		Label:      t.Attribute.Label,
 		Value:      t.Attribute.Value,
 		Type:       t.Attribute.Type,
+		Required:   t.Attribute.Required,
 	}
 	return CategoryRepo.CreateAttribute(categoryAttribute)
 }
 
 func (t *Category) UpdateAttribute() error {
 	categoryAttribute := po.CategoryAttribute{
-		ID:    t.Attribute.ID,
-		Label: t.Attribute.Label,
-		Value: t.Attribute.Value,
-		Type:  t.Attribute.Type,
+		ID:       t.Attribute.ID,
+		Label:    t.Attribute.Label,
+		Value:    t.Attribute.Value,
+		Type:     t.Attribute.Type,
+		Required: t.Attribute.Required,
 	}
-	return CategoryRepo.CreateAttribute(categoryAttribute)
+	return CategoryRepo.UpdateAttribute(categoryAttribute)
 }

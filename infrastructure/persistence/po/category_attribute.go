@@ -9,6 +9,7 @@ type CategoryAttribute struct {
 	Value      []string  `xorm:"value json"`
 	Type       string    `xorm:"type varchar(16)"`
 	CategoryID int64     `xorm:"category_id bigint"`
+	Required   bool      `xorm:"required"`
 	UpdateAt   time.Time `xorm:"update_at datetime"`
 	CreateAt   time.Time `xorm:"create_at datetime"`
 }

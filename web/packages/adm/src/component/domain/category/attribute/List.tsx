@@ -1,7 +1,8 @@
-import { Button, Form, message, Modal, Space, Table } from "antd";
+import { Button, Form, Input, message, Modal, Popconfirm, Space, Table } from "antd";
 
 import { api, model } from "@/service";
 import { useEffect, useState } from "react";
+import { Dialog } from "./Dialog";
 
 interface AttributeProps {
     category: model.Category;
@@ -26,26 +27,39 @@ export function List(props: AttributeProps) {
             title: '操作',
             dataIndex: 'action',
             width: '110px',
-            render: (text: undefined, record: model.Attribute) => {
+            render: (text: undefined, record: model.CategoryAttribute) => {
                 return <Space size={24}>
-                    <a className="iconfont" title="编辑">&#xe640;</a>
-                    <a className="iconfont" title="删除">&#xe640;</a>
+                    <a className="iconfont" title="编辑" onClick={() => disAttribute(record)}>&#xe640;</a>
+                    <Popconfirm 
+                        title="确定要删除吗？"
+                        onConfirm={() => delAttribute(record)}
+                    >
+                        <a className="iconfont" title="删除">&#xe618;</a>
+                    </Popconfirm>
                 </Space>
             }
         },
     ];
     const [attribute, setAttribute] = useState({
-        list: new Array<model.Attribute>(),
+        info: new model.CategoryAttribute(),
+        list: new Array<model.CategoryAttribute>(),
         dialog: {
             open: false,
             title: '',
         }
     });
 
+    // 获取属性
     const getAttribute = async () => {
         let data: model.Request = {
             current: 1,
             pageSize: 1000,
+            queryBy: [
+                {
+                    field: 'categoryId',
+                    value: props.category.id,
+                }
+            ]
         };
         let res = await api.Category.findAttribute(data);
         if (res.code == 1000) {
@@ -60,37 +74,39 @@ export function List(props: AttributeProps) {
         getAttribute();
     }, [props.category]);
 
-    const [attributeForm] = Form.useForm();
-
-    const disAttribute = async (item?: model.Attribute) => {
+    // 新增、编辑属性
+    const disAttribute = async (item?: model.CategoryAttribute) => {
         attribute.dialog.open = !attribute.dialog.open;
-        attributeForm.resetFields();
+        Object.assign(attribute.info, new model.CategoryAttribute());
         if (!!item) {
             attribute.dialog.title = '编辑属性';
-            attributeForm.setFieldsValue(item);
+            Object.assign(attribute.info, item);
         } else {
             attribute.dialog.title = '新增属性';
         }
+        attribute.info.categoryId = props.category.id;
         setAttribute({ ...attribute });
     }
 
-    const onAttribute = async () => {
-        let data = attributeForm.getFieldsValue();
-        let res: model.Response;
-        if (data.id > 0) {
-            res = await api.Category.updateAttribute(data);
-        } else {
-            res = await api.Category.createAttribute(data);
+    const onOk = () => {
+        getAttribute();
+        attribute.dialog.open = false;
+        setAttribute({ ...attribute });
+    }
+
+    // 删除属性
+    const delAttribute = async (item: model.CategoryAttribute) => {
+        let data = {
+            categoryId: props.category.id,
+            id: [item.id],
         }
+        let res = await api.Category.deleteAttribute(data);
         if (res.code == 1000) {
-            attribute.dialog.open = false;
             getAttribute();
         } else {
             message.error(res.desc);
         }
-        setAttribute({ ...attribute });
     }
-
 
     return <>
         <div className="box-head">
@@ -101,25 +117,12 @@ export function List(props: AttributeProps) {
             <Space>
                 <Button type="primary" onClick={() => disAttribute()}>新增属性</Button>
             </Space>
-            <Modal
+            {attribute.dialog.open && <Dialog
                 title={attribute.dialog.title}
-                open={attribute.dialog.open}
-                onCancel={() => attribute.dialog.open = false}
-                onOk={onAttribute}
-            >
-                <Form
-                    labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 20 }}
-                    form={attributeForm}
-                >
-                    <Form.Item label="属性名称" name="label">
-                        <input />
-                    </Form.Item>
-                    <Form.Item label="属性值" name="value">
-                        <input />
-                    </Form.Item>
-                </Form>
-            </Modal>
+                attribute={attribute.info}
+                onOk={onOk}
+                onClose={() => disAttribute()}
+            />}
         </div>
         <div className="box-body">
             <Table

@@ -6,6 +6,7 @@ export * from './attribute';
 export * from './brand';
 export * from './bundle';
 export * from './category';
+export * from './category_attribute';
 export * from './config';
 export * from './dept';
 export * from './emp';

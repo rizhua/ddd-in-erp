@@ -43,22 +43,24 @@ func (t *CategoryService) CreateAttribute(cmd command.CreateCategoryAttribute) e
 	category := entity.Category{
 		ID: cmd.CategoryID,
 		Attribute: &entity.CategoryAttribute{
-			Label: cmd.Label,
-			Value: cmd.Value,
-			Type:  cmd.Type,
+			Label:    cmd.Label,
+			Value:    cmd.Value,
+			Type:     cmd.Type,
+			Required: cmd.Required,
 		},
 	}
-	return category.Create()
+	return category.CreateAttribute()
 }
 
 func (t *CategoryService) UpdateAttribute(cmd command.UpdateCategoryAttribute) error {
 	category := entity.Category{
 		Attribute: &entity.CategoryAttribute{
-			ID:    cmd.ID,
-			Label: cmd.Label,
-			Value: cmd.Value,
-			Type:  cmd.Type,
+			ID:       cmd.ID,
+			Label:    cmd.Label,
+			Value:    cmd.Value,
+			Type:     cmd.Type,
+			Required: cmd.Required,
 		},
 	}
-	return category.Update()
+	return category.UpdateAttribute()
 }

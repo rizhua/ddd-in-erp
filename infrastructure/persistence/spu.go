@@ -73,7 +73,7 @@ func (t *spu) Find(req query.Request) (list []po.Spu, total int64, err error) {
 	query = strings.TrimPrefix(query, " AND ")
 
 	// 统计条数
-	total, err = t.db.Where(query, args...).Count(new(po.Notice))
+	total, err = t.db.Where(query, args...).Count(new(po.Spu))
 	if err != nil {
 		return
 	}

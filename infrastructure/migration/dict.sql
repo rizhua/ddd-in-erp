@@ -430,6 +430,7 @@ CREATE TABLE "category_attribute" (
   "label" varchar(64) not null default '',
   "value" json not null default '[]',
   "type" varchar(16) not null default 'SELECT',
+  "required" boolean not null default false,
   "update_at" timestamp not null default (now()),
   "create_at" timestamp not null default (now())
 );
@@ -438,6 +439,7 @@ COMMENT ON COLUMN category_attribute.category_id IS '类目id';
 COMMENT ON COLUMN category_attribute.label IS '属性名';
 COMMENT ON COLUMN category_attribute.value IS '属性值';
 COMMENT ON COLUMN category_attribute.type IS '属性类型:SELECT-下拉框,INPUT-输入框,UPLOAD-上传框';
+COMMENT ON COLUMN category_attribute.required IS '是否必选';
 
 
 -- 商品 - spu
@@ -447,7 +449,6 @@ CREATE TABLE "spu" (
   "id" bigserial not null PRIMARY KEY,
   "code" varchar(32) not null,
   "name" varchar(256) not null,
-  "low_price" integer not null,
   "category_id" bigint not null,
   "brand_id" integer not null default 0,
   "sale_count" integer not null default 0,
@@ -464,7 +465,6 @@ CREATE TABLE "spu" (
 COMMENT ON TABLE spu IS '自产商品';
 COMMENT ON COLUMN spu.code IS '编码';
 COMMENT ON COLUMN spu.name IS '名称';
-COMMENT ON COLUMN spu.low_price IS '最低售价';
 COMMENT ON COLUMN spu.category_id IS '分类id';
 COMMENT ON COLUMN spu.brand_id IS '品牌id';
 COMMENT ON COLUMN spu.sale_count IS '销售数';

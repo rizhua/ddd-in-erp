@@ -58,15 +58,14 @@ func (t *ProductService) Get(id int64) (entity.Spu, error) {
 }
 
 func (t *ProductService) Find(req query.Request) (list []entity.Spu, total int64, err error) {
-	spuDO := entity.Spu{}
-	return spuDO.Find(req)
+	spu := entity.Spu{}
+	return spu.Find(req)
 }
 
 func (t *ProductService) CreateAttribute(cmd command.CreateAttribute) error {
 	attribute := entity.Attribute{
 		Label:    cmd.Label,
 		Value:    cmd.Value,
-		IsSale:   cmd.IsSale,
 		Required: cmd.Required,
 		Multi:    cmd.Multi,
 	}
@@ -78,7 +77,6 @@ func (t *ProductService) UpdateAttribute(cmd command.UpdateAttribute) error {
 		ID:       cmd.ID,
 		Label:    cmd.Label,
 		Value:    cmd.Value,
-		IsSale:   cmd.IsSale,
 		Required: cmd.Required,
 		Multi:    cmd.Multi,
 	}

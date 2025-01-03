@@ -7,6 +7,9 @@ const routes: RouteObject[] = [
         path: '/',
         element: <layout.Console />,
         children: [{
+            path: 'attribute',
+            element: <domain.attribute.List />,
+        }, {
             path: 'bundle',
             element: <Outlet />,
             children: [
@@ -110,9 +113,6 @@ const routes: RouteObject[] = [
                 }, {
                     path: 'publish',
                     element: <domain.product.Publish />,
-                }, {
-                    path: 'attribute',
-                    element: <domain.product.attribute.List />,
                 }, {
                     path: 'comment',
                     element: <domain.product.Comment />,

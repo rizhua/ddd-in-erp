@@ -1,3 +1,4 @@
+export * as attribute from './attribute';
 export * as auth from './auth';
 export * as bundle from './bundle';
 export * as category from './category';

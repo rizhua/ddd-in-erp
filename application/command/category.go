@@ -23,11 +23,12 @@ type CreateCategoryAttribute struct {
 	Label      string   `json:"label"`
 	Value      []string `json:"value"`
 	Type       string   `json:"type"`
+	Required   bool     `json:"required"`
 }
 
 func (t *CreateCategoryAttribute) Validate() error {
 	if t.Label == "" {
-		return errors.New("参数错误，缺少参数 label")
+		return errors.New("label is required")
 	}
 	return nil
 }
@@ -40,22 +41,23 @@ type DeleteCategoryAttribute struct {
 
 func (c *DeleteCategoryAttribute) Validate() error {
 	if len(c.ID) == 0 {
-		return errors.New("参数错误，缺少参数 id")
+		return errors.New("id is required")
 	}
 	return nil
 }
 
 // 更新类目属性
 type UpdateCategoryAttribute struct {
-	ID    int64    `json:"id"`
-	Label string   `json:"label"`
-	Value []string `json:"value"`
-	Type  string   `json:"type"`
+	ID       int64    `json:"id"`
+	Label    string   `json:"label"`
+	Value    []string `json:"value"`
+	Type     string   `json:"type"`
+	Required bool     `json:"required"`
 }
 
 func (t *UpdateCategoryAttribute) Validate() error {
 	if t.ID == 0 {
-		return errors.New("参数错误，缺少参数 id")
+		return errors.New("id is required")
 	}
 	return nil
 }

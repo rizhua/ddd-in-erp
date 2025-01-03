@@ -189,6 +189,14 @@ func (t *Handler) Category(path string, args []byte) (data any, err error) {
 		err = t.categoryApp.Update(args)
 	case "/category/find":
 		data, err = t.categoryApp.Find(args)
+	case "/category/attribute/create":
+		err = t.categoryApp.CreateAttribute(args)
+	case "/category/attribute/delete":
+		err = t.categoryApp.DeleteAttribute(args)
+	case "/category/attribute/update":
+		err = t.categoryApp.UpdateAttribute(args)
+	case "/category/attribute/find":
+		data, err = t.categoryApp.FindAttribute(args)
 	default:
 		err = errors.New("404")
 	}

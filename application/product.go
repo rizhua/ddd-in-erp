@@ -15,13 +15,11 @@ import (
 func NewProductService(
 	productDomain domain.ProductService,
 	spuRepo repository.Spu,
-	categoryRepo repository.Category,
 	attributeRepo repository.Attribute,
 ) ProductService {
 	return ProductService{
 		productDomain: productDomain,
 		spuRepo:       spuRepo,
-		categoryRepo:  categoryRepo,
 		attributeRepo: attributeRepo,
 	}
 }
@@ -29,7 +27,6 @@ func NewProductService(
 type ProductService struct {
 	productDomain domain.ProductService
 	spuRepo       repository.Spu
-	categoryRepo  repository.Category
 	attributeRepo repository.Attribute
 	Context       context.Context
 }
@@ -97,6 +94,9 @@ func (t *ProductService) CreateAttribute(args []byte) error {
 	if err := json.Unmarshal(args, &cmd); err != nil {
 		return err
 	}
+	if err := cmd.Validate(); err != nil {
+		return err
+	}
 	t.productDomain.Context = t.Context
 	return t.productDomain.CreateAttribute(cmd)
 }
@@ -112,6 +112,9 @@ func (t *ProductService) DeleteAttribute(args []byte) error {
 func (t *ProductService) UpdateAttribute(args []byte) error {
 	cmd := command.UpdateAttribute{}
 	if err := json.Unmarshal(args, &cmd); err != nil {
+		return err
+	}
+	if err := cmd.Validate(); err != nil {
 		return err
 	}
 	t.productDomain.Context = t.Context

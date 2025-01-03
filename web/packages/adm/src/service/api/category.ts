@@ -44,7 +44,7 @@ export class Category {
     /**
      * 创建类目属性
      */
-    static createAttribute(data: model.Attribute): Promise<model.Response> {
+    static createAttribute(data: model.CategoryAttribute): Promise<model.Response> {
         let url = '/category/attribute/create';
         return http.post(url, data);
     }
@@ -60,7 +60,7 @@ export class Category {
     /**
      * 更新类目属性
      */
-    static updateAttribute(data: model.Attribute): Promise<model.Response> {
+    static updateAttribute(data: model.CategoryAttribute): Promise<model.Response> {
         let url = '/category/attribute/update';
         return http.post(url, data);
     }

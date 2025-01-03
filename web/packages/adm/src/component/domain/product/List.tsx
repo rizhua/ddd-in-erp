@@ -48,7 +48,7 @@ export function List() {
     list: new Array<model.Product>(),
     total: 0,
   });
-  const [req, setReq] = useState(new model.Request());
+  const [req, setReq] = useState(new model.Request({current: 1, pageSize: 10}));
 
   const getProduct = async () => {
     topbar.show();

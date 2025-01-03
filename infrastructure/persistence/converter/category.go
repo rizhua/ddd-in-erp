@@ -69,6 +69,7 @@ type CategoryAttribute struct {
 	Value      []string `json:"value"`
 	Type       string   `json:"type"`
 	CategoryID int64    `json:"categoryId"`
+	Required   bool     `json:"required"`
 	UpdateAt   string   `json:"updateAt"`
 	CreateAt   string   `json:"createAt"`
 }
@@ -80,6 +81,7 @@ func (t *CategoryAttribute) Info(in po.CategoryAttribute) (info CategoryAttribut
 		Value:      in.Value,
 		Type:       in.Type,
 		CategoryID: in.CategoryID,
+		Required:   in.Required,
 		UpdateAt:   in.UpdateAt.Format("2006-01-02 15:04:05"),
 		CreateAt:   in.CreateAt.Format("2006-01-02 15:04:05"),
 	}

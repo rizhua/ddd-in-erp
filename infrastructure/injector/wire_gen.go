@@ -39,7 +39,7 @@ func BuildInjector(db *xorm.Engine) (*Injector, func(), error) {
 	spu := persistence.NewSpu(db)
 	attribute := persistence.NewAttribute(db)
 	productService := domain.NewProductService(spu, category, attribute)
-	applicationProductService := application.NewProductService(productService, spu, category, attribute)
+	applicationProductService := application.NewProductService(productService, spu, attribute)
 	role := persistence.NewRole(db)
 	roleService := domain.NewRoleService(role)
 	applicationRoleService := application.NewRoleService(roleService, role, userService)
