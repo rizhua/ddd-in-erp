@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Upload } from "./Upload";
-import { useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { api, model } from "@/service";
+import { message } from "antd";
 
 const Container = styled.form`
 
@@ -48,13 +50,8 @@ const Container = styled.form`
         gap: 8px;
         flex: 1;
 
-        &.sell {
-            border: 1px solid #e0e0e0;
-            padding: 16px;
-        }
-
         input {
-            max-width: 300px;
+            max-width: 200px;
             border-radius: 4px;
             padding: 0 8px;
             border: 1px solid #e0e0e0;
@@ -107,6 +104,10 @@ const Container = styled.form`
         padding: 16px 0;
         border-top: 1px solid #e0e0e0;
     }
+`;
+const Sell = styled.div`
+    border: 1px solid #e0e0e0;
+    padding: 8px;
 
     .sell-item {
         position: relative;
@@ -116,6 +117,7 @@ const Container = styled.form`
         }
 
         .sell-item-delete {
+            cursor: pointer;
             position: absolute;
             right: 10px;
             top: 10px;
@@ -168,6 +170,7 @@ const Container = styled.form`
             }
 
             a {
+                cursor: pointer;
                 position: absolute;
                 right: -10px;
                 top: -10px;
@@ -190,6 +193,20 @@ const Container = styled.form`
             gap: 8px;
         }
     }
+
+    .sell-foot {
+        display: flex;
+        padding: 8px;
+        background-color: #f5f5f5;
+
+        .btn-default {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+    }
 `;
 
 export function Publish() {
@@ -206,6 +223,100 @@ export function Publish() {
             video: '',
         }
     });
+    const [attribute, setAttribute] = useState(new Array<model.Attribute>());
+
+    const addAttribute = () => {
+        setAttribute([...attribute, new model.Attribute()]);
+    };
+
+    const removeAttribute = (index: number) => {
+        setAttribute(attribute.filter((_, i) => i !== index));
+    };
+
+    const addAttributeItem = (index: number) => {
+        const item = attribute[index];
+        item.value.push('');
+        setAttribute([...attribute]);
+    };
+
+    const removeAttributeItem = (index: number, itemIndex: number) => {
+        const item = attribute[index].value;
+        if (item && item.length > 0) {
+            item.splice(itemIndex, 1);
+        }
+        setAttribute([...attribute]);
+    };
+
+    const getAttribute = async () => {
+        let data = {
+            ...new model.Request({ current: 1, pageSize: 1000 }),
+            queryBy: [
+                {
+                    field: 'categoryId',
+                    value: 1
+                }
+            ]
+        }
+        let res = await api.Product.findAttribute(data);
+        if (res.code == 1000) {
+            setAttribute(res.data.list);
+        } else {
+            message.error(res.desc);
+        }
+    };
+
+    useEffect(() => {
+        getAttribute();
+    }, []);
+
+    let [tr, setTr] = useState<ReactNode[]>([]);
+    useEffect(() => {
+        const data = combineData(attribute).map((m, i) => <tr key={i}>
+            {m.map((n, j) => <td key={j}>{n}</td>)}
+            <td>
+                <input type="text" />
+            </td>
+            <td>
+                <input type="text" />
+            </td>
+            <td>
+                <input type="text" />
+            </td>
+        </tr>);
+        setTr(data);
+    }, [attribute]);
+
+    function combineData(data: model.Attribute[]): string[][] {
+        const result: string[][] = [];
+        // if (data.length < 2) {
+        //     return result;
+        // }
+        // 用于存储所有属性值的数组
+        const allValuesArrays: string[][]= [];
+        data.forEach((item) => {
+            if (item.multi) {
+                allValuesArrays.push([item.value.join(',')]);
+            } else {
+                allValuesArrays.push(item.value);
+            }
+        });
+
+        // 生成所有可能的组合
+        function generateCombinations(index: number, currentCombination: string[]): void {
+            if (index === allValuesArrays.length) {
+                result.push([...currentCombination]);
+                return;
+            }
+            const currentValues = allValuesArrays[index];
+            for (let i = 0; i < currentValues.length; i++) {
+                currentCombination.push(currentValues[i]);
+                generateCombinations(index + 1, currentCombination);
+                currentCombination.pop();
+            }
+        }
+        generateCombinations(0, []);
+        return result;
+    }
 
     return <Container>
         <div className="box-head">
@@ -268,32 +379,56 @@ export function Publish() {
         <div className="box-body">
             <div className="form-item">
                 <label className="form-label">销售属性</label>
-                <div className="form-control sell">
-                    <div className="sell-item">
+                <Sell className="form-control">
+                    {attribute.map((m, i) => <div className="sell-item" key={i}>
                         <div className="sell-item-name">
                             <label>规格名:</label>
                             <div className="column">
-                                <input type="text" />
-                                <label htmlFor="">
+                                <input type="text" value={m.label} onChange={(e) => {
+                                    const item = attribute[i];
+                                    item.label = e.target.value;
+                                    setAttribute([...attribute]);
+                                }} />
+                                {i == 0 && <label htmlFor="">
                                     <input type="checkbox" />添加规格图片
-                                </label>
+                                </label>}
                             </div>
                         </div>
                         <div className="sell-item-value">
                             <label>规格值:</label>
                             <div className="row">
-                                <div className="input-box">
-                                    <input type="text" />
-                                    <a href="#">x</a>
-                                </div>
-                                <a href="#">添加规格值</a>
+                                {m.value.map((x, j) => <div className="input-box" key={j}>
+                                    <input type="text" value={x} onChange={(e) => {
+                                        const item = attribute[i];
+                                        item.value[j] = e.target.value;
+                                        setAttribute([...attribute]);
+                                    }} />
+                                    <a onClick={() => removeAttributeItem(i, j)}>x</a>
+                                </div>)}
+                                <a onClick={() => addAttributeItem(i)}>添加规格值</a>
                             </div>
                         </div>
-                        <a className="sell-item-delete" href="#">x</a>
+                        <a className="sell-item-delete" onClick={() => removeAttribute(i)}>x</a>
+                    </div>)}
+                    <div className="sell-foot">
+                        <a className="btn-default" onClick={addAttribute}>添加规格</a>
                     </div>
-                    <div className="sell-btn">
-                        <button className="btn btn-primary">添加规格</button>
-                    </div>
+                </Sell>
+            </div>
+            <div className="form-item">
+                <label className="form-label">销售规格</label>
+                <div className="form-control">
+                    <table className="table">
+                        <thead>
+                            {attribute.map((m, i) => <th key={i}>{m.label}</th>)}
+                            <th>价格(元)</th>
+                            <th>库存</th>
+                            <th>规格编码</th>
+                        </thead>
+                        <tbody>
+                            {tr.map(m => m)}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div className="form-item">
@@ -386,7 +521,7 @@ export function Publish() {
                         </div>
                         <div className="row">
                             <label className="radio-item">
-                                <input name="publish-time" type="radio" />暂不售卖，放入仓库
+                                <input name="publish-time" type="radio" />放入仓库
                             </label>
                         </div>
                     </div>
