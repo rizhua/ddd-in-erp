@@ -1,59 +1,37 @@
-import { Button, Form, Input, Select, Space, Table } from "antd";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Table, Flex, Select, Button, TextField, Link } from '@radix-ui/themes';
 
 import { api, model } from "@/service";
 import topbar from "topbar";
-import { useNavigate } from "react-router-dom";
 
-const columns = [{
-  title: "商品名",
-  dataIndex: "name",
-  render: (f: string, r: model.Product) => {
-    return <a>
-      <img src="/images/product/1.png" alt="" />
-      <span>{f}</span>
-    </a>
-  }
-}, {
-  title: "价格(元)",
-  dataIndex: "lowPrice",
-}, {
-  title: "库存",
-  dataIndex: "stock",
-}, {
-  title: "销量",
-  dataIndex: "saleCount",
-}, {
-  title: "排序",
-  dataIndex: "sort",
-}, {
-  title: "商品状态",
-  dataIndex: "status",
-}, {
-  title: "创建时间",
-  dataIndex: "createAt",
-}, {
-  title: "操作",
-  dataIndex: "action",
-  render: (f: undefined, r: model.Product) => {
-    return <Space>
-      <a href="#">编辑</a>
-      <a href="#">编辑</a>
-    </Space>
-  }
-}];
 
 export function List() {
   const [product, setProduct] = useState({
     list: new Array<model.Product>(),
     total: 0,
   });
-  const [req, setReq] = useState(new model.Request({current: 1, pageSize: 10}));
+  const [req, setReq] = useState({ 
+    ...new model.Request({ current: 1, pageSize: 10 }),
+  });
+  const [query, setQuery] = useState({
+    field: 'name',
+    value: '',
+  });
 
-  const getProduct = async () => {
+  const getProduct = async (e?: React.FormEvent<HTMLFormElement>) => {
+    if (!!e) {
+      e.preventDefault();
+    }
     topbar.show();
     let data = {
       ...req,
+      queryBy: new Array(),
+    }
+    if (!!query.value) {
+      data.queryBy.push({ field: query.field, value: query.value });
+    } else {
+      data.queryBy = undefined!;
     }
     let res = await api.Product.find(data);
     if (res.code == 1000) {
@@ -67,36 +45,94 @@ export function List() {
     topbar.hide();
   }
 
+  const onInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setQuery({
+      ...query,
+      [e.target.name]: e.target.value,
+    })
+  }
+
   useEffect(() => {
     getProduct();
   }, [req.current]);
 
   const navigate = useNavigate();
 
-  const toPublish = () => {
-    navigate("/product/publish");
+  const toPublish = (item?: model.Product) => {
+    let url = "/product/publish";
+    if (!!item) {
+      url += `?id=${item.id}`;
+    }
+    navigate(url);
+  }
+
+  // 下架
+  const offShelf = async (item: model.Product) => {
+    let data = {
+      id: item.id
+    }
+    let res = await api.Product.offShelf(data);
+    if (res.code == 1000) {
+      getProduct();
+    }
+  }
+
+  const onValueChange = (value: string) => {
+    setQuery({
+      ...query,
+      field: value
+    })
   }
 
   return <>
     <div className="box-head">
       <h1>自产商品</h1>
-      <Form layout="inline" initialValues={{ field: "name" }}>
-        <Form.Item name="field">
-          <Select>
-            <Select.Option value="name">商品名</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="value">
-          <Input />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary">搜索</Button>
-        </Form.Item>
-        <Button type="primary" onClick={toPublish}>发布商品</Button>
-      </Form>
+      <Flex gap="3">
+        <form className="form-inline" onSubmit={getProduct}>
+            <Select.Root onValueChange={onValueChange} defaultValue="name" name="field" size="2">
+            <Select.Trigger />
+              <Select.Content>
+                <Select.Item value="name">商品名</Select.Item>
+                <Select.Item value="price">价格</Select.Item>
+              </Select.Content>
+            </Select.Root>
+            <TextField.Root name="value" onChange={onInput}></TextField.Root>
+            <Button type="submit">搜索</Button>
+        </form>
+        <Button onClick={()=>toPublish()}>发布商品</Button>
+      </Flex>
     </div>
     <div className="box-body">
-      <Table columns={columns} dataSource={product.list} pagination={{ ...req, total: product.total }} onChange={(e) => setReq(e)} />
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeaderCell>商品名</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>价格(元)</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>库存</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>销量</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>商品状态</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>创建时间</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell justify="center">操作</Table.ColumnHeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {product.list.map(m => <Table.Row key={m.id}>
+            <Table.Cell>{m.name}</Table.Cell>
+            <Table.Cell>{m.lowPrice}</Table.Cell>
+            <Table.Cell>{m.name}</Table.Cell>
+            <Table.Cell>{m.saleCount}</Table.Cell>
+            <Table.Cell>{m.name}</Table.Cell>
+            <Table.Cell>{m.createdAt}</Table.Cell>
+            <Table.Cell width="100px">
+              <Flex gap="3" justify="center">
+                <Link onClick={() => toPublish(m)}>编辑</Link>
+                <Link onClick={() => offShelf(m)}>下架</Link>
+              </Flex>
+            </Table.Cell>
+          </Table.Row>)}
+        </Table.Body>
+      </Table.Root>
     </div>
   </>
 }

@@ -4,22 +4,21 @@ import "time"
 
 // 标准化产品单元
 type Spu struct {
-	ID         int64            `xorm:"id pk autoincr"`
-	Code       string           `xorm:"code varchar(32)"`
-	Name       string           `xorm:"name varchar(240)"`
-	LowPrice   int32            `xorm:"low_price int"`
-	CategoryID int64            `xorm:"category_id int"`
-	BrandID    int64            `xorm:"brand_id int"`
-	SaleCount  int32            `xorm:"sale_count int"`
-	RateCount  int32            `xorm:"rate_count int"`
-	OrgID      int64            `xorm:"org_id int"`
-	Barcode    string           `xorm:"barcode text"`
-	Attribute  []map[string]any `xorm:"attribute json"`
-	Media      []map[string]any `xorm:"media json"`
-	Detail     string           `xorm:"detail text"`
-	Status     int8             `xorm:"status int"`
-	UpdateAt   time.Time        `xorm:"update_at datetime"`
-	CreateAt   time.Time        `xorm:"create_at datetime"`
+	ID         int64  `xorm:"id pk autoincr"`
+	Code       string `xorm:"code varchar(32)"`
+	Name       string `xorm:"name varchar(240)"`
+	LowPrice   int32  `xorm:"low_price int"`
+	CategoryID int64  `xorm:"category_id int"`
+	BrandID    int64  `xorm:"brand_id int"`
+	SaleCount  int32  `xorm:"sale_count int"`
+	RateCount  int32  `xorm:"rate_count int"`
+	OrgID      int64  `xorm:"org_id int"`
+	Barcode    string `xorm:"barcode text"`
+	// Media      []map[string]any `xorm:"media json"`
+	Detail   string    `xorm:"detail text"`
+	Status   int8      `xorm:"status int"`
+	UpdateAt time.Time `xorm:"update_at datetime"`
+	CreateAt time.Time `xorm:"create_at datetime"`
 }
 
 // 设定表名

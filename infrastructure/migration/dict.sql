@@ -570,6 +570,62 @@ COMMENT ON COLUMN spu_comment.love IS '点赞/喜欢';
 COMMENT ON COLUMN spu_comment.star IS '星:0~5';
 
 
+-- 运费模板 - freight_template
+DROP TABLE IF EXISTS "freight_template";
+
+CREATE TABLE "freight_template" (
+  "id" bigserial not null PRIMARY KEY,
+  "name" varchar(128) not null default '',
+  "mode" smallint not null default 1,
+  "update_at" timestamp not null default (now()),
+  "create_at" timestamp not null default (now())
+);
+COMMENT ON TABLE freight_template IS '运费模板';
+COMMENT ON COLUMN freight_template.name IS '名称';
+COMMENT ON COLUMN freight_template.mode IS '计费方式:1-按件数,2-按重量,3-按体积';
+
+
+-- 运费模板配送区域 - freight_template_item
+DROP TABLE IF EXISTS "freight_template_item";
+
+CREATE TABLE "freight_template_item" (
+  "id" bigserial not null PRIMARY KEY,
+  "template_id" bigint not null REFERENCES "freight_template"(id),
+  "region_code" varchar(16) not null default '',
+  "region_name" varchar(128) not null default '',
+  "weight_base" numeric(10,2) not null default 0,
+  "weight_base_cost" numeric(10,2) not null default 0,
+  "weight_next" numeric(10,2) not null default 0,
+  "weight_next_cost" numeric(10,2) not null default 0,
+  "qty_base" integer not null default 0,
+  "qty_base_cost" numeric(10,2) not null default 0,
+  "qty_next" integer not null default 0,
+  "qty_next_cost" numeric(10,2) not null default 0,
+  "volume_base" numeric(10,2) not null default 0,
+  "volume_base_cost" numeric(10,2) not null default 0,
+  "volume_next" numeric(10,2) not null default 0,
+  "volume_next_cost" numeric(10,2) not null default 0,
+  "update_at" timestamp not null default (now()),
+  "create_at" timestamp not null default (now())
+);
+COMMENT ON TABLE freight_template_item IS '运费模板配送区域';
+COMMENT ON COLUMN freight_template_item.template_id IS '模板id';
+COMMENT ON COLUMN freight_template_item.region_code IS '区域编码';
+COMMENT ON COLUMN freight_template_item.region_name IS '区域名称';
+COMMENT ON COLUMN freight_template_item.weight_base IS '重量基数';
+COMMENT ON COLUMN freight_template_item.weight_base_cost IS '重量基数费用';
+COMMENT ON COLUMN freight_template_item.weight_next IS '重量递增';
+COMMENT ON COLUMN freight_template_item.weight_next_cost IS '重量递增费用';
+COMMENT ON COLUMN freight_template_item.qty_base IS '数量基数';
+COMMENT ON COLUMN freight_template_item.qty_base_cost IS '数量基数费用';
+COMMENT ON COLUMN freight_template_item.qty_next IS '数量递增';
+COMMENT ON COLUMN freight_template_item.qty_next_cost IS '数量递增费用';
+COMMENT ON COLUMN freight_template_item.volume_base IS '体积基数';
+COMMENT ON COLUMN freight_template_item.volume_base_cost IS '体积基数费用';
+COMMENT ON COLUMN freight_template_item.volume_next IS '体积递增';
+COMMENT ON COLUMN freight_template_item.volume_next_cost IS '体积递增费用';
+
+
 -- 店仓 - store
 DROP TABLE IF EXISTS "store";
 
@@ -665,22 +721,6 @@ COMMENT ON COLUMN store_bill.keep_at IS '出入库时间';
 COMMENT ON COLUMN store_bill.type IS '出入:iMPORT-入库,EXPORT-出库';
 COMMENT ON COLUMN store_bill.status IS '状态:0-已作废,1-待处理,2-已完成';
 COMMENT ON COLUMN store_bill.remark IS '备注';
-
-
--- 物流 - logistics
-DROP TABLE IF EXISTS "logistics";
-
-CREATE TABLE "logistics" (
-  "id" bigserial not null PRIMARY KEY,
-  "name" varchar(128) not null default '',
-  "logo" text not null default '',
-  "deleted" timestamp,
-  "update_at" timestamp not null default (now()),
-  "create_at" timestamp not null default (now())
-);
-COMMENT ON TABLE logistics IS '物流';
-COMMENT ON COLUMN logistics.name IS '名称';
-COMMENT ON COLUMN logistics.logo IS '图标';
 
 
 -- 供应商 - supplier

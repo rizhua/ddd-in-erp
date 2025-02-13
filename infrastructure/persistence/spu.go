@@ -80,7 +80,7 @@ func (t *spu) Find(req query.Request) (list []po.Spu, total int64, err error) {
 	if total > 0 {
 		// 分页数据
 		offset := (req.Current - 1) * req.PageSize
-		err = t.db.Where(query, args...).Omit("attribute,detail").Limit(req.PageSize, offset).Find(&list)
+		err = t.db.Where(query, args...).Omit("detail").Limit(req.PageSize, offset).Find(&list)
 	} else {
 		err = errors.New("is empty")
 	}

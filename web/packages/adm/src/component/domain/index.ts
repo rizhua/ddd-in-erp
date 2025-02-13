@@ -7,6 +7,7 @@ export * as emp from './emp';
 export * as market from './market';
 export * as node from './node';
 export * as notice from './notice';
+export * as order from './order';
 export * as password from './password';
 export * as product from './product';
 export * as purchase from './purchase';

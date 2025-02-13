@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { model, api } from "@/service";
 import topbar from "topbar";
 import * as attribute from "./attribute";
+import { Dialog } from "@radix-ui/themes";
 
 const Container = styled.div`
   display: flex;
@@ -142,27 +143,6 @@ export function List() {
     } else {
       message.error(res.desc);
     }
-  }
-
-  const setSort = (event: any, r: model.Category) => {
-    let sort = Number(event.target.value);
-    if (sort != r.sort) {
-      let data = {
-        id: r.id,
-        sort: sort,
-      };
-      api.Product.setCategorySort(data).then(res => {
-        if (res.code == 1000) {
-          getCategory();
-          message.success('修改成功');
-        } else {
-          message.error(res.desc);
-        }
-      });
-    }
-    let s = new Set([...editable]);
-    s.delete(r.id);
-    setEditable([...s]);
   }
 
   useEffect(() => {

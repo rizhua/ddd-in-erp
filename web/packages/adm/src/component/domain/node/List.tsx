@@ -252,7 +252,7 @@ export function List() {
                     <Form.Item name="icon" label="图标">
                         <Input />
                     </Form.Item>
-                    {node.info.id == 0 && <Form.Item name="parentId" label="上级节点">
+                    {<Form.Item name="parentId" label="上级节点">
                         <TreeSelect treeData={node.list} fieldNames={{ label: 'name', value: 'id' }} showSearch allowClear />
                     </Form.Item>}
                     <Form.Item name="id" hidden>

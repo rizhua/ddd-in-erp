@@ -56,4 +56,20 @@ export class Product {
         let url = '/product/attribute/find';
         return http.post(url, data);
     }
+
+    /**
+     * 下架
+     */
+    static offShelf(data: {id: number}): Promise<model.Response> {
+        let url = '/product/offShelf';
+        return http.post(url, data);
+    }
+
+    /**
+     * 运费模板
+     */
+    static findFreight(data: model.Request): Promise<model.Response> {
+        let url = '/product/freight/find';
+        return http.post(url, data);
+    }
 }

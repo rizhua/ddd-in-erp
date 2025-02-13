@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { Upload } from "./Upload";
 import { ReactNode, useEffect, useState } from "react";
+import { Button, Text } from "@radix-ui/themes";
+
 import { api, model } from "@/service";
-import { message } from "antd";
+import { Upload } from "./Upload";
 
 const Container = styled.form`
 
@@ -51,7 +52,7 @@ const Container = styled.form`
         flex: 1;
 
         input {
-            max-width: 200px;
+            max-width: 360px;
             border-radius: 4px;
             padding: 0 8px;
             border: 1px solid #e0e0e0;
@@ -63,7 +64,7 @@ const Container = styled.form`
         }
 
         input[type="number"] {
-            width: 100px;
+            width: 80px;
             height: 24px;
         }
     }
@@ -261,12 +262,32 @@ export function Publish() {
         if (res.code == 1000) {
             setAttribute(res.data.list);
         } else {
-            message.error(res.desc);
+            // message.error(res.desc);
+        }
+    };
+
+    // 获取运费模板
+    const getFreight = async () => {
+        let data = {
+            ...new model.Request({ current: 1, pageSize: 1000 }),
+            queryBy: [
+                {
+                    field: 'categoryId',
+                    value: 1
+                }
+            ]
+        }
+        let res = await api.Product.findFreight(data);
+        if (res.code == 1000) {
+            setSpu({ ...spu, info: { ...spu.info, freight: res.data.list[0] } });
+        } else {
+            // message.error(res.desc);
         }
     };
 
     useEffect(() => {
         getAttribute();
+        getFreight();
     }, []);
 
     let [tr, setTr] = useState<ReactNode[]>([]);
@@ -318,6 +339,7 @@ export function Publish() {
         return result;
     }
 
+
     return <Container>
         <div className="box-head">
             <h2>商品类型</h2>
@@ -345,18 +367,6 @@ export function Publish() {
         </div>
         <div className="box-body">
             <div className="form-item">
-                <label className="form-label">商品图片</label>
-                <div className="form-control">
-                    <Upload onChange={(v) => setSpu({ ...spu, info: { ...spu.info, images: v } })} maxCount={3} />
-                </div>
-            </div>
-            <div className="form-item">
-                <label className="form-label">讲解视频</label>
-                <div className="form-control">
-                    <Upload onChange={(v) => setSpu({ ...spu, info: { ...spu.info, video: v[0] } })} maxCount={1} />
-                </div>
-            </div>
-            <div className="form-item">
                 <label className="form-label">商品名称</label>
                 <div className="form-control">
                     <input type="text" />
@@ -366,6 +376,18 @@ export function Publish() {
                 <label className="form-label">商品编码</label>
                 <div className="form-control">
                     <input type="text" />
+                </div>
+            </div>
+            <div className="form-item">
+                <label className="form-label">商品图片</label>
+                <div className="form-control">
+                    <Upload onChange={(v) => setSpu({ ...spu, info: { ...spu.info, images: v } })} maxCount={3} />
+                </div>
+            </div>
+            <div className="form-item">
+                <label className="form-label">讲解视频</label>
+                <div className="form-control">
+                    <Upload onChange={(v) => setSpu({ ...spu, info: { ...spu.info, video: v[0] } })} maxCount={1} />
                 </div>
             </div>
             <div className="form-item">
@@ -494,7 +516,7 @@ export function Publish() {
                             <label className="radio-item">
                                 <input name="express-fee" type="radio" />运费到付
                             </label>
-                            <div className="tips">设置运费到付后，需要买家在收到商品后自行支付运费，运费最终以物流公司计算为准。</div>
+                            <Text className="tips">设置运费到付后，需要买家在收到商品后自行支付运费，运费最终以物流公司计算为准。</Text>
                         </div>
                     </div>
                 </div>
@@ -529,7 +551,8 @@ export function Publish() {
             </div>
         </div>
         <div className="box-foot">
-            <button className="btn btn-primary">保存</button>
+            {/* <button className="btn btn-primary">保存</button> */}
+            <Button>保存</Button>
             <button className="btn btn-primary">预览</button>
         </div>
     </Container>;

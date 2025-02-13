@@ -89,9 +89,8 @@ func (t *Spu) Create(cmd command.CreateSpu) error {
 		Detail:     cmd.Detail,
 		CategoryID: cmd.CategoryID,
 		BrandID:    cmd.BrandID,
-		Attribute:  cmd.Attribute,
-		Media:      cmd.Media,
-		Status:     cmd.Status,
+		// Media:      cmd.Media,
+		Status: cmd.Status,
 	}
 	return SpuRepo.Create(info)
 }
@@ -123,8 +122,8 @@ func (t *Spu) toEntity(in po.Spu) Spu {
 		RateCount: in.RateCount,
 		Barcode:   in.Barcode,
 		Category:  &Category{ID: in.CategoryID},
-		Media:     in.Media,
-		Status:    in.Status,
+		// Media:     in.Media,
+		Status: in.Status,
 	}
 }
 

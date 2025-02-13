@@ -104,6 +104,15 @@ const routes: RouteObject[] = [
                 },
             ]
         }, {
+            path: 'order',
+            element: <Outlet />,
+            children: [
+                {
+                    path: '',
+                    element: <domain.order.List />
+                },
+            ]
+        }, {
             path: 'product',
             element: <Outlet />,
             children: [
