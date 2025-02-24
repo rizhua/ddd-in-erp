@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Table } from "antd";
 
 import { api, model } from "@/service";
-import { s } from "vite/dist/node/types.d-aGj9QkWt";
 
-const Contianer = styled.div`
+const Container = styled.div`
     position: absolute;
     top: 0;
     right: 0;
@@ -86,7 +84,7 @@ export function License(props: LicenseProps) {
         props.onClose();
     }
 
-    return props.open && <Contianer>
+    return props.open && <Container>
         <div className="box-head">
             <a className="close iconfont" onClick={() => close()}>&#xe6b3;</a>
         </div>
@@ -99,5 +97,5 @@ export function License(props: LicenseProps) {
                 </div>)}
             </div>
         </div>
-    </Contianer>
+    </Container>
 }

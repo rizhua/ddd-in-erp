@@ -12,7 +12,6 @@ import (
 var VERSION = "0.1.0"
 
 func main() {
-	// logger.SetVersion(VERSION)
 	ctx := context.WithValue(context.Background(), "tagKey", "__main__")
 	app := cli.NewApp()
 	app.Name = "rizhua"
@@ -23,7 +22,7 @@ func main() {
 	}
 	err := app.Run(os.Args)
 	if err != nil {
-		logrus.WithContext(ctx).Errorf(err.Error())
+		logrus.WithContext(ctx).Errorf("%s", err.Error())
 	}
 }
 

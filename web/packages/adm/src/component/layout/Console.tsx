@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom";
-import { message } from "antd";
+import { toast, ToastContainer } from 'react-toastify';
+import styled from "styled-components";
+
+import { Popover } from "@radix-ui/themes";
 
 import { model, api } from "@/service";
-import styled from "styled-components";
 import { UserContext } from "@/context";
 
 const Container = styled.div`
@@ -18,12 +20,9 @@ const Side = styled.aside`
     z-index: 100;
 
     &:hover > .close {
-
-        /* .close { */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        /* } */
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .close {
@@ -260,7 +259,7 @@ export function Console() {
     let path = new Set(searchParams.get('path')?.split(','));
     let userContext = useContext(UserContext);
 
-    const [org, setorg] = useState({
+    const [org, setOrg] = useState({
         list: new Array<model.Org>(),
     });
 
@@ -271,7 +270,7 @@ export function Console() {
         } else {
             org.list = [];
         }
-        setorg({ ...org });
+        setOrg({ ...org });
         getMenu();
     }
 
@@ -336,7 +335,7 @@ export function Console() {
             localStorage.removeItem('token');
             navigate('/auth/signIn');
         } else {
-            message.error(res.desc);
+            toast.error(res.desc);
         }
     }
 
@@ -355,7 +354,7 @@ export function Console() {
         if (res.code == 1000) {
             location.reload();
         } else {
-            message.error(res.desc);
+            toast.error(res.desc);
         }
     }
 
@@ -365,13 +364,16 @@ export function Console() {
             <div className="sidebar">
                 <ul className="nav-first">
                     <li className="menu-item">
-                        <a className="nav-head menu-link" onClick={() => setOpen(!open)}>
-                            <i className="icon">{userContext.state.nickname.slice(0,1).toUpperCase()}</i>
-                            <div className="text">{userContext.state.nickname}</div>
-                            <i className="iconfont">&#xe66e;</i>
-                        </a>
-                        {open && <Box>
-                            <div className="box-head">
+                        <Popover.Root>
+                            <Popover.Trigger>
+                                <a className="nav-head menu-link" onClick={() => setOpen(!open)}>
+                                    <i className="icon">{userContext.state.nickname.slice(0,1).toUpperCase()}</i>
+                                    <div className="text">{userContext.state.nickname}</div>
+                                    <i className="iconfont">&#xe66e;</i>
+                                </a>
+                            </Popover.Trigger>
+                            <Popover.Content>
+                                <div className="box-head">
                                 <div className="row">
                                     <div className="icon">{userContext.state.nickname.slice(0,1).toUpperCase()}</div>
                                     <div>
@@ -403,7 +405,8 @@ export function Console() {
                                     <a onClick={logout}>退出登录</a>
                                 </div>
                             </div>
-                        </Box>}
+                        </Popover.Content>
+                        </Popover.Root>
                     </li>
                     {menu.list.map((v, k) => v.leaf || v.meta == 'B' ?
                         <li className="menu-item" key={v.id}>
@@ -453,5 +456,6 @@ export function Console() {
                 <Outlet />
             </div>
         </Main>
+        <ToastContainer />
     </Container>
 }

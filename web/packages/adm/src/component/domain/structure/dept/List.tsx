@@ -257,7 +257,6 @@ export function List() {
                             options={emp.list.map(m => ({label: m.name, value: m.id}))}
                         />
                     </Form.Item>
-
                 </Form>
             </Modal>
             <div className="side-foot">

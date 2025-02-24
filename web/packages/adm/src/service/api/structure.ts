@@ -61,7 +61,7 @@ export class Structure {
     /**
      * 添加员工
      */
-    static createEmp(data: model.Dept): Promise<model.Response> {
+    static createEmp(data: model.Emp): Promise<model.Response> {
         let url = '/structure/emp/create';
         return http.post(url, data);
     }
@@ -69,7 +69,7 @@ export class Structure {
     /**
      * 更新员工
      */
-    static updateEmp(data: model.Dept): Promise<model.Response> {
+    static updateEmp(data: model.Emp): Promise<model.Response> {
         let url = '/structure/emp/update';
         return http.post(url, data);
     }

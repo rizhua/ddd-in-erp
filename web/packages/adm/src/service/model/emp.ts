@@ -11,7 +11,9 @@ export class Emp {
     name: string;
     number: string;
     position: string;
+    gender: number;
     grade: string;
+    birthday?: string;
     mobile: string;
     tel: string;
     address: string;
@@ -28,6 +30,7 @@ export class Emp {
         this.name = '';
         this.number = '';
         this.position = '';
+        this.gender = 0;
         this.grade = '';
         this.mobile = '';
         this.tel = '';

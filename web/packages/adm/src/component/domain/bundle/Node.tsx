@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { api, model } from "@/service";
-import { get } from "http";
 
-const Contianer = styled.div`
+const Container = styled.div`
     position: absolute;
     top: 0;
     right: 0;
@@ -172,7 +171,7 @@ export function Node(props: NodeProps) {
         }
     }
 
-    return props.open ? <Contianer>
+    return props.open ? <Container>
         <div className="box-head">
             <a className="close iconfont" onClick={() => close()}>&#xe6b3;</a>
         </div>
@@ -190,5 +189,5 @@ export function Node(props: NodeProps) {
             <button className="btn-default" onClick={() => close()}>取消</button>
             <button className="btn-primary" onClick={() => saveNode()}>保存</button>
         </div>
-    </Contianer> : null
+    </Container> : null
 }
