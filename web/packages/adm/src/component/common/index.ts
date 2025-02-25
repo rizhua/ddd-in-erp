@@ -1,6 +1,5 @@
 
 export * from './Captcha';
-export * from './Dialog';
-export * from './Field';
+export * from './dialog/Dialog';
 
 export * from './NotFound';
