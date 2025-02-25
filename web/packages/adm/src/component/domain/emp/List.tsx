@@ -79,14 +79,6 @@ export function List() {
         }
     }
 
-    const selection = {
-        selectedRowKeys: emp.selectedRowKeys,
-        onChange: (selectedRowKeys: React.Key[]) => {
-            emp.selectedRowKeys = selectedRowKeys as number[];
-            setEmp({ ...emp });
-        }
-    };
-
     // 定义颜色枚举
     enum BadgeColor {
         Red = 'red',
@@ -136,9 +128,7 @@ export function List() {
         <Dialog
             open={emp.dialog.open}
             title={emp.dialog.title}
-            description="Make changes to your profile."
             placement="right"
-            // maskClosable={true}
             onOk={empForm.handleSubmit(onEmp)}
             onClose={() => setEmp({...emp, dialog: {...emp.dialog, open: false}})}
         >

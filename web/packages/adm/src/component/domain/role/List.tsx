@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Space, Tabs, TabsProps, Modal, Form, message, Select, Dropdown, MenuProps, Input, Button, Empty } from 'antd';
+import topbar from 'topbar';
 
 import { Emp, Node } from './';
 import { model, api } from '@/service';
-import topbar from 'topbar';
+import { Dialog } from '@/component/common';
 
 
 const Container = styled.div`
@@ -162,12 +163,12 @@ export function List() {
             <div className="btn-group">
                 <Button type="primary" onClick={() => disRole('group')}>新建分组</Button>
                 <Button type="primary" onClick={() => disRole('role')}>新建角色</Button>
-                <Modal
+                <Dialog
                     title={role.modal.title}
                     open={role.modal.open}
                     onOk={onRole}
-                    onCancel={() => disRole()}
-                    width={360}
+                    onClose={() => disRole()}
+                    // width={360}
                 >
                     <Form form={roleForm}>
                         <Form.Item name="id" hidden>
@@ -180,7 +181,7 @@ export function List() {
                             <Select options={role.list} fieldNames={{ label: 'name', value: 'id' }} />
                         </Form.Item>}
                     </Form>
-                </Modal>
+                </Dialog>
             </div>
             {role.list.map((m: model.Role) => {
                 let arr = [];

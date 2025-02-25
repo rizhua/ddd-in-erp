@@ -5,7 +5,7 @@ import { message } from "antd";
 
 import { api, model } from "@/service";
 
-const Contianer = styled.div`
+const Container= styled.div`
     display: grid;
     justify-content: center;
     align-items: center;
@@ -197,7 +197,7 @@ export function EmpTransfer(props: PropsType) {
         }
     }, [props.open]);
 
-    return props.open ? ReactDOM.createPortal(<Contianer>
+    return props.open ? ReactDOM.createPortal(<Container>
         <Box>
             <div className="box-head">
                 <div className="text">添加成员</div>
@@ -244,5 +244,5 @@ export function EmpTransfer(props: PropsType) {
                 <button className="btn btn-primary" onClick={() => addEmp()}>确定</button>
             </div>
         </Box>
-    </Contianer>, document.body) : null;
+    </Container>, document.body) : null;
 }
