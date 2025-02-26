@@ -78,6 +78,8 @@ type Spu struct {
 	SkuList   []*sku
 	Category  *Category
 	Comment   []*spuComment
+	UpdateAt  time.Time
+	CreateAt  time.Time
 }
 
 func (t *Spu) Create(cmd command.CreateSpu) error {
@@ -123,7 +125,9 @@ func (t *Spu) toEntity(in po.Spu) Spu {
 		Barcode:   in.Barcode,
 		Category:  &Category{ID: in.CategoryID},
 		// Media:     in.Media,
-		Status: in.Status,
+		Status:   in.Status,
+		UpdateAt: in.UpdateAt,
+		CreateAt: in.CreateAt,
 	}
 }
 

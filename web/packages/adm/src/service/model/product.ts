@@ -8,8 +8,8 @@ export class Product {
     public barCode: string;
     public media: string;
     public detail: string;
-    public createdAt?: string;
-    public updatedAt?: string;
+    public createAt?: string;
+    public updateAt?: string;
 
     constructor() {
         this.id = 0;

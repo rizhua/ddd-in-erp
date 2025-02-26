@@ -27,8 +27,8 @@ func (t *Spu) Info(in entity.Spu) (info Spu) {
 		Barcode:   in.Barcode,
 		Media:     in.Media,
 		Detail:    in.Detail,
-		// CreateAt: in.CreateAt.Format("2006-01-02 15:04:05"),
-		// UpdateAt: in.UpdateAt.Format("2006-01-02 15:04:05"),
+		UpdateAt:  in.UpdateAt.Format("2006-01-02 15:04:05"),
+		CreateAt:  in.CreateAt.Format("2006-01-02 15:04:05"),
 	}
 	return
 }

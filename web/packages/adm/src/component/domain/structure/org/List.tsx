@@ -4,9 +4,10 @@ import { Button, Badge } from '@radix-ui/themes';
 
 import { model, api } from "@/service";
 import topbar from "topbar";
+import { Pagination } from "@/component/common";
 
 export function List() {
-    const [req, setReq] = useState(new model.Request());
+    const [req, setReq] = useState(new model.Request({ current: 1, pageSize: 1 }));
     const [org, setOrg] = useState({
         list: new Array<model.Org>(),
         total: 0,
@@ -18,15 +19,14 @@ export function List() {
         let data: model.Request = {
             ...req,
         };
-        // if (!!searchForm.getFieldValue('val')) {
-        //     data.queryBy = [{
-        //         ...searchForm.getFieldsValue()
-        //     }];
-        // }
+        let tmp = queryForm.getValues();
+        if (!!tmp.value) {
+            data.queryBy = [{ field: tmp.field, value: tmp.value }];
+        }
         let res = await api.Structure.list(data);
         if (res.code == 1000) {
-            org.list = res.data.list;
-            org.total = res.data.total;
+            org.list = res.data.list || [];
+            org.total = 50;//res.data.total;
         } else {
             org.list = [];
             org.total = 0;
@@ -44,13 +44,13 @@ export function List() {
             <h1>组织列表</h1>
             <form className="form-inline" onSubmit={queryForm.handleSubmit(getOrg)}>
                 <div className="form-item">
-                    <select>
+                    <select {...queryForm.register('field')}>
                         <option value="name">名称</option>
                         <option value="contact">联系人</option>
                     </select>
                 </div>
                 <div className="form-item">
-                    <input type="text" />
+                    <input {...queryForm.register('value')} type="text" />
                 </div>
                 <Button type="submit">搜索</Button>
             </form>
@@ -84,6 +84,7 @@ export function List() {
                     </tr>)}
                 </tbody>
             </table>
+            <Pagination current={req.current} pageSize={req.pageSize} total={org.total} onChange={(current: number, pageSize: number) => setReq({ ...req, current, pageSize })} />
         </div>
     </>
 }

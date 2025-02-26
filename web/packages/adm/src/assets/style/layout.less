@@ -93,15 +93,26 @@ input, select {
     box-sizing: border-box;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"],input[type="radio"] {
     box-shadow: none;
     height: auto;
+}
+
+input[type="number"] {
+    width: 60px;
+    appearance: textfield;
+    -webkit-appearance: textfield;
 }
 
 button {
     cursor: pointer;
     border: 1px solid transparent;
     border-radius: 4px;
+
+    &[disabled] {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
 }
 
 .box {

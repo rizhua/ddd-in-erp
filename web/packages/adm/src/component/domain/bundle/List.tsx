@@ -151,28 +151,19 @@ export function List() {
     return <>
         <div className="box-head">
             <h1>资源套餐</h1>
-            <Form
-                form={searchForm}
-                layout="inline"
-                onFinish={getBundle}
-                initialValues={{ field: 'name' }}
-            >
-                <Form.Item name="field">
-                    <Select
-                        options={[{ label: '名称', value: 'name' }]}
-                        value="name"
-                    />
-                </Form.Item>
-                <Form.Item name="value">
-                    <Input allowClear />
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">搜索</Button>
-                </Form.Item>
-                <Space>
-                    <Button type="primary" onClick={() => disBundle()}>新增套餐</Button>
-                </Space>
-            </Form>
+            <form className="form-inline">
+                <div className="form-item">
+                    <select>
+                        <option value="name">名称</option>
+                    </select>
+                </div>
+                <div className="form-item">
+                    <input type="text" />
+                </div>
+                <div className="form-item">
+                    <Button type="primary">搜索</Button>
+                </div>
+            </form>
             <Drawer
                 open={bundle.dialog.open}
                 title={bundle.dialog.title}

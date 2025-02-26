@@ -89,6 +89,7 @@ export function List() {
     <div className="box-head">
       <h1>自产商品</h1>
       <Flex gap="3">
+        <Button onClick={()=>toPublish()}>发布商品</Button>
         <form className="form-inline" onSubmit={getProduct}>
             <Select.Root onValueChange={onValueChange} defaultValue="name" name="field" size="2">
             <Select.Trigger />
@@ -100,39 +101,38 @@ export function List() {
             <TextField.Root name="value" onChange={onInput}></TextField.Root>
             <Button type="submit">搜索</Button>
         </form>
-        <Button onClick={()=>toPublish()}>发布商品</Button>
       </Flex>
     </div>
     <div className="box-body">
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>商品名</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>价格(元)</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>库存</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>销量</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>商品状态</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>创建时间</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell justify="center">操作</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {product.list.map(m => <Table.Row key={m.id}>
-            <Table.Cell>{m.name}</Table.Cell>
-            <Table.Cell>{m.lowPrice}</Table.Cell>
-            <Table.Cell>{m.name}</Table.Cell>
-            <Table.Cell>{m.saleCount}</Table.Cell>
-            <Table.Cell>{m.name}</Table.Cell>
-            <Table.Cell>{m.createdAt}</Table.Cell>
-            <Table.Cell width="100px">
+      <table className="table">
+        <thead>
+          <tr>
+            <th>商品名</th>
+            <th>价格(元)</th>
+            <th>库存</th>
+            <th>销量</th>
+            <th>商品状态</th>
+            <th>创建时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {product.list.map(m => <tr key={m.id}>
+            <td>{m.name}</td>
+            <td>{m.lowPrice}</td>
+            <td>-</td>
+            <td>{m.saleCount}</td>
+            <td>{m.name}</td>
+            <td>{m.createAt}</td>
+            <td width="100px">
               <Flex gap="3" justify="center">
                 <Link onClick={() => toPublish(m)}>编辑</Link>
                 <Link onClick={() => offShelf(m)}>下架</Link>
               </Flex>
-            </Table.Cell>
-          </Table.Row>)}
-        </Table.Body>
-      </Table.Root>
+            </td>
+          </tr>)}
+        </tbody>
+      </table>
     </div>
   </>
 }
