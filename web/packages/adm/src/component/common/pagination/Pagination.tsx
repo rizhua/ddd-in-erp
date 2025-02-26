@@ -6,6 +6,7 @@ const Container = styled.div`
     justify-content: flex-end;
     align-items: center;
     gap: 8px;
+    padding: 16px 0;
 
     a.item {
         cursor: pointer;
@@ -74,6 +75,10 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         gap: 4px;
+    }
+
+    .btn-primary {
+        min-width: 50px;
     }
 `
 

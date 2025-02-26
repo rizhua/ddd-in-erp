@@ -61,10 +61,7 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-}
-
-body, button, input, select, textarea {
-    font: 12px / 1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji, BlinkMacSystemFont, Helvetica Neue, Arial, PingFang SC, PingFang TC, PingFang HK, Microsoft Yahei, Microsoft JhengHei;
+    font-family: var(--font-family);
 }
 
 a {
@@ -90,6 +87,7 @@ input, select {
     border: none;
     border-radius: var(--radius-md);
     outline-color: var(--primary-color);
+    font-family: var(--font-family);
     box-sizing: border-box;
 }
 
@@ -100,8 +98,6 @@ input[type="checkbox"],input[type="radio"] {
 
 input[type="number"] {
     width: 60px;
-    appearance: textfield;
-    -webkit-appearance: textfield;
 }
 
 button {
